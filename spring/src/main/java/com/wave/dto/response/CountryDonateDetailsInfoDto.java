@@ -32,13 +32,13 @@ public record CountryDonateDetailsInfoDto(
         String imageProducer,
 
         @NotNull(message = "allWave은 필수값입니다.")
-        String allWave,
+        int allWave,
 
         @NotNull(message = "lastWave은 필수값입니다.")
-        String lastWave,
+        int lastWave,
 
         @NotNull(message = "casualties은 필수값입니다.")
-        String casualties,
+        int casualties,
 
         @NotNull(message = "detailImage은 필수값입니다.")
         String detailImage,
@@ -94,9 +94,9 @@ public record CountryDonateDetailsInfoDto(
                 .subTitle(country.getSubTitle())
                 .image(country.getImageUrl())
                 .imageProducer(country.getImageProducer())
-                .allWave(country.getTotalWave().toString())
-                .lastWave(country.getLastWave().toString())
-                .casualties(country.getCasualties().toString())
+                .allWave(country.getTotalWave())
+                .lastWave(country.getLastWave())
+                .casualties(country.getCasualties())
                 .contents(country.getCountryContents().stream()
                         .map(countryContent -> ContentInfo.of(countryContent.getTitle(), countryContent.getContent()))
                         .toList())

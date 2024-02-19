@@ -16,17 +16,7 @@ public interface CountryRepository extends JpaRepository<Country, Long> {
     @Query("SELECT c FROM Country c WHERE c.category IN (com.wave.dto.type.ECategory.EMERGENCY, com.wave.dto.type.ECategory.ALERT, com.wave.dto.type.ECategory.CAUTION)")
     List<Country> findCountriesByCategories();
 
-
-    @Query("SELECT c FROM Country c WHERE c.isDonate = true")
-    Optional<Country> findByIdAndIsDonateTrue(Long countryId);
-
-
-
-    Optional<Country> findByKoreanName(String koreanName);
-
     @Query("SELECT c FROM Country c WHERE c.isDonate = true")
     List<Country> findByDonateTrue();
 
-    @Query("SELECT c FROM Country c WHERE c.isDonate = false")
-    Optional<Country> findByIdAndIsDonateFalse(Long countryId);
 }
