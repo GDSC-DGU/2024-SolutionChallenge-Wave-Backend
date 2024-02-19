@@ -79,4 +79,8 @@ public class User {
     public void addDonation(DonationCountry donationCountry) {
         donations.add(donationCountry);
     }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 }

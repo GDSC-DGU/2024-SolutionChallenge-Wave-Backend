@@ -32,4 +32,10 @@ public class AuthController {
         authService.deleteUser(userId);
         return ResponseDto.ok(null);
     }
+
+    //3.5 토큰 재요청
+    @PostMapping("/refresh")
+    public ResponseDto<?> refresh(@UserId Long userId) {
+        return ResponseDto.ok(authService.refresh(userId));
+    }
 }
