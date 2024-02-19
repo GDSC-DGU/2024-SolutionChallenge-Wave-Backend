@@ -1,0 +1,9 @@
+flask
+requests
+beautifulsoup4
+pandas
+fuzzywuzzy
+python-Levenshtein
+tqdm
+gunicorn
+apscheduler
