@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,14 +35,20 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_USER));
 
-        DonationCountry donationCountry = donationCountryRepository.findByUserAndCountry(user, country)
-                .orElseGet(() -> donationCountryRepository.save(DonationCountry.createDonationCountry(country, user, userDonateDto.money())));
-
-        donationCountry.updateDonation(userDonateDto.money(), user, donationCountry);
-
+        donationCountryRepository.findByUserAndCountry(user, country)
+                .ifPresentOrElse(
+                        donationCountry -> {
+                            donationCountry.updateDonation(userDonateDto.money());
+                        },
+                        () -> {
+                            donationCountryRepository.save(DonationCountry.createDonationCountry(country, user, userDonateDto.money()));
+                        }
+                );
         user.updateTotalDonation(userDonateDto.money());
         country.updateWave(userDonateDto.money());
     }
+
+
 
     //3.1 유저 정보
     public UserInfoDto getUserInfo(Long userId) {
