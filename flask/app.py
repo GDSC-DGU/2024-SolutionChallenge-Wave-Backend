@@ -6,7 +6,7 @@ from fuzzywuzzy import fuzz
 import pandas as pd
 from tqdm import tqdm
 import json
-from config import CLIENT_ID, CLIENT_SECRET
+from config import CLIENT_ID, CLIENT_SECRET, LOCAL_SERVER, PROD_SERVER
 from apscheduler.schedulers.background import BackgroundScheduler
 import logging
 import random
@@ -17,6 +17,10 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 app = Flask(__name__)
 country_ids = {
+    "우간다": 165,
+    "우크라이나": 166,
+    "베네수엘라": 170,
+    "예멘": 173,
     "아프가니스탄": 1,
     "부르키나파소": 14,
     "콩고": 33,
@@ -35,11 +39,8 @@ country_ids = {
     "팔레스타인": 132,
     "남수단": 140,
     "소말리아": 146,
-    "시리아": 153,
-    "우간다": 165,
-    "우크라이나": 166,
-    "베네수엘라": 170,
-    "예멘": 173
+    "시리아": 153
+
 }
 
 user_agents = [
@@ -110,7 +111,7 @@ def articles_crawler(url):
 
     soup = BeautifulSoup(html, "html.parser")
     articles = soup.select("div.group_news > ul.list_news > li div.news_area > div.news_info > div.info_group > a.info")
-    # print(articles)
+    print(articles)
     return news_attrs_crawler(articles, 'href')
 
 
@@ -195,6 +196,7 @@ def scheduled_crawling():
                 else:
                     news_image_url.append('해당 기사는 사진이 없습니다')
 
+
                 # 날짜
                 try:
                     html_date = soup.select_one(
@@ -237,7 +239,7 @@ def scheduled_crawling():
                 }
                 logging.info(
                     f"Sending data to Spring application for {country_name}: {json.dumps(result_data, ensure_ascii=False)}")
-                url = 'http://springapp:8080/api/v1/countries/crawling-news'
+                url = PROD_SERVER
                 headers = {'Content-Type': 'application/json; charset=utf-8'}
                 response = requests.post(url, json=result_data, headers=headers)
                 if response.status_code != 200:
