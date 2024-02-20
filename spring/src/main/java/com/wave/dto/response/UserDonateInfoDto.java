@@ -51,7 +51,7 @@ public record UserDonateInfoDto(
         return UserDonateInfoDto.builder()
                 .totalWave(totalWave)
                 .donateList(donationCountry.stream()
-                        .map(dc -> Donation.of(dc))
+                        .map(Donation::of)
                         .toList())
                 .build();
     }

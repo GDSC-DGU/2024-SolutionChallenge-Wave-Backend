@@ -34,8 +34,10 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_USER));
 
-        donationCountryRepository.findByUserAndCountry(user, country)
+        DonationCountry donationCountry = donationCountryRepository.findByUserAndCountry(user, country)
                 .orElseGet(() -> donationCountryRepository.save(DonationCountry.createDonationCountry(country, user, userDonateDto.money())));
+
+        donationCountry.updateDonation(userDonateDto.money(), user, donationCountry);
 
         user.updateTotalDonation(userDonateDto.money());
         country.updateWave(userDonateDto.money());

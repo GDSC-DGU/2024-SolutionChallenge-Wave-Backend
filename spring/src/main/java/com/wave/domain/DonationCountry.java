@@ -53,8 +53,9 @@ public class DonationCountry {
         return donationCountry;
     }
 
-    public void updateDonation(int donation) {
+    public void updateDonation(int donation, User user, DonationCountry donationCountry) {
         this.donation += donation;
+        user.addDonation(donationCountry);
     }
 
 }
