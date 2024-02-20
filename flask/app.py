@@ -111,7 +111,9 @@ def articles_crawler(url):
 
     soup = BeautifulSoup(html, "html.parser")
     articles = soup.select("div.group_news > ul.list_news > li div.news_area > div.news_info > div.info_group > a.info")
-    print(articles)
+    # print(articles)
+    if not articles:
+        print("no articles found")
     return news_attrs_crawler(articles, 'href')
 
 
