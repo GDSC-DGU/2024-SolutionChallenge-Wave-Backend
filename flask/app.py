@@ -117,7 +117,6 @@ def articles_crawler(url):
     return news_attrs_crawler(articles, 'href')
 
 
-
 def make_list(newlist, content):
     for i in content:
         for j in i:
@@ -132,7 +131,13 @@ def remove_escape_chars(text):
     return text
 
 
+# 첫 데이터를 넣기 위한 api
 @app.route('/flask/crawling', methods=['GET'])
+def crawling():
+    scheduled_crawling()
+    return "Crawling and processing completed for all countries."
+
+
 def scheduled_crawling():
     for country_name, country_id in country_ids.items():
         result_data = {}
@@ -198,7 +203,6 @@ def scheduled_crawling():
                 else:
                     news_image_url.append('해당 기사는 사진이 없습니다')
 
-
                 # 날짜
                 try:
                     html_date = soup.select_one(
@@ -251,7 +255,6 @@ def scheduled_crawling():
 
         except Exception as e:
             logging.error(f"An error occurred during processing {country_name}: {e}")
-
 
 
 scheduler = BackgroundScheduler()
