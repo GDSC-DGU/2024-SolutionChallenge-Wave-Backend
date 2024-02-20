@@ -245,7 +245,7 @@ def scheduled_crawling():
                 }
                 logging.info(
                     f"Sending data to Spring application for {country_name}: {json.dumps(result_data, ensure_ascii=False)}")
-                url = LOCAL_SERVER
+                url = PROD_SERVER
                 headers = {'Content-Type': 'application/json; charset=utf-8'}
                 response = requests.post(url, json=result_data, headers=headers)
                 if response.status_code != 200:
