@@ -42,6 +42,7 @@ public class AuthService {
         return jwtTokenDto;
     }
 
+
     //3.4 회원 탈퇴
     @Transactional
     public void deleteUser(Long userId) {
