@@ -1,7 +1,7 @@
 package com.wave.security.filter;
 
 
-import com.wave.constrant.Constants;
+import com.wave.constant.Constants;
 import com.wave.dto.type.ErrorCode;
 import com.wave.exception.CommonException;
 import io.jsonwebtoken.ExpiredJwtException;

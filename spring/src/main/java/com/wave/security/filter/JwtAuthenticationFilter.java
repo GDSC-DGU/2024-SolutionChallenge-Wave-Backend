@@ -1,7 +1,7 @@
 package com.wave.security.filter;
 
 
-import com.wave.constrant.Constants;
+import com.wave.constant.Constants;
 import com.wave.security.info.UserPrincipal;
 import com.wave.security.service.CustomUserDetailService;
 import com.wave.utility.HeaderUtil;

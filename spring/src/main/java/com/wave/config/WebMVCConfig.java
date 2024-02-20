@@ -1,7 +1,7 @@
 package com.wave.config;
 
 
-import com.wave.constrant.Constants;
+import com.wave.constant.Constants;
 import com.wave.intercepter.pre.UserIdArgumentResolver;
 import com.wave.intercepter.pre.UserIdInterceptor;
 import lombok.NonNull;

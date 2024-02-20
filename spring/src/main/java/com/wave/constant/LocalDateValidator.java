@@ -1,4 +1,4 @@
-package com.wave.constrant;
+package com.wave.constant;
 
 import com.wave.annotation.Date;
 import jakarta.validation.ConstraintValidator;

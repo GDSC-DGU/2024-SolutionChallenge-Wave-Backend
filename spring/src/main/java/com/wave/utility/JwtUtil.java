@@ -1,7 +1,7 @@
 package com.wave.utility;
 
 
-import com.wave.constrant.Constants;
+import com.wave.constant.Constants;
 import com.wave.dto.response.JwtTokenDto;
 import com.wave.dto.type.ERole;
 import io.jsonwebtoken.Claims;

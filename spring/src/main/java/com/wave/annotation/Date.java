@@ -1,6 +1,6 @@
 package com.wave.annotation;
 
-import com.wave.constrant.LocalDateValidator;
+import com.wave.constant.LocalDateValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
