@@ -55,6 +55,7 @@ user_agents = [
 ]
 
 
+# 파파고 api 호출
 def translate_text_ko_to_en(text):
     Source_Lang = 'ko'
     Target_Lang = 'en'
@@ -115,6 +116,7 @@ def articles_crawler(url):
     return news_attrs_crawler(articles, 'href')
 
 
+# 1차원 리스트로 만들기(내용 제외)
 def make_list(new_list, content):
     for i in content:
         for j in i:
@@ -154,7 +156,6 @@ def scheduled_crawling():
                 crawled_urls = articles_crawler(url)
                 news_urls.append(crawled_urls)
 
-            # 1차원 리스트로 만들기(내용 제외)
             make_list(news_url_1, news_urls)
 
             # NAVER 뉴스만 남기기
@@ -260,4 +261,4 @@ scheduler.start()
 if __name__ == '__main__':
     app.run()
 
-# =============================
+
