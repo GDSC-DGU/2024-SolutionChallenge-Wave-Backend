@@ -6,7 +6,7 @@ from fuzzywuzzy import fuzz
 import pandas as pd
 from tqdm import tqdm
 import json
-from config import CLIENT_ID, CLIENT_SECRET, LOCAL_SERVER, PROD_SERVER
+from config import CLIENT_ID, CLIENT_SECRET, SERVER_END_POINT
 from apscheduler.schedulers.background import BackgroundScheduler
 import logging
 import random
@@ -16,7 +16,8 @@ from urllib.parse import quote
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 app = Flask(__name__)
-country_ids = {
+
+COUNTRY_IDS = {
     "우간다": 165,
     "우크라이나": 166,
     "베네수엘라": 170,
@@ -40,7 +41,6 @@ country_ids = {
     "남수단": 140,
     "소말리아": 146,
     "시리아": 153
-
 }
 
 user_agents = [
@@ -104,24 +104,22 @@ def articles_crawler(url):
         "User-Agent": random.choice(user_agents)
     }
     safe_url = quote(url, safe='/:?=&')
-    print("crawling url is this ====")
     req = urllib.request.Request(safe_url, headers=headers)
     with urllib.request.urlopen(req) as response:
         html = response.read().decode('utf-8')
 
     soup = BeautifulSoup(html, "html.parser")
     articles = soup.select("div.group_news > ul.list_news > li div.news_area > div.news_info > div.info_group > a.info")
-    # print(articles)
     if not articles:
-        print("no articles found")
+        logging.info("No articles found for URL: %s", url)
     return news_attrs_crawler(articles, 'href')
 
 
-def make_list(newlist, content):
+def make_list(new_list, content):
     for i in content:
         for j in i:
-            newlist.append(j)
-    return newlist
+            new_list.append(j)
+    return new_list
 
 
 def remove_escape_chars(text):
@@ -139,9 +137,9 @@ def crawling():
 
 
 def scheduled_crawling():
-    for country_name, country_id in country_ids.items():
+    for country_name, country_id in COUNTRY_IDS.items():
         result_data = {}
-        print(country_name, country_id)
+        logging.info(f"{country_name} {country_id}")
         try:
             urls = make_url(country_name, 1, 2)
             news_dates = []
@@ -171,7 +169,6 @@ def scheduled_crawling():
             if not final_urls:
                 pass
             for url in final_urls:
-                # print((len(final_urls)))
                 headers = {
                     "User-Agent": random.choice(user_agents)
                 }
@@ -228,7 +225,7 @@ def scheduled_crawling():
                 real_use5_df = news_df[:5]
             else:
                 real_use5_df = news_df
-            print("뉴스 프레임 생성")
+            logging.info(f"뉴스 프레임 생성")
 
             real_use5_df = real_use5_df.copy()
             real_use5_df['title'] = real_use5_df['title'].apply(lambda x: x.strip())  # 공백 없애기 -> 파파고 api 사용을 위한 전처리
@@ -243,9 +240,8 @@ def scheduled_crawling():
                     "id": country_id,
                     "data": real_use5_df.to_dict(orient='records')
                 }
-                logging.info(
-                    f"Sending data to Spring application for {country_name}: {json.dumps(result_data, ensure_ascii=False)}")
-                url = PROD_SERVER
+                logging.info(f"Sending to Main Server")
+                url = SERVER_END_POINT
                 headers = {'Content-Type': 'application/json; charset=utf-8'}
                 response = requests.post(url, json=result_data, headers=headers)
                 if response.status_code != 200:
@@ -263,3 +259,5 @@ scheduler.start()
 
 if __name__ == '__main__':
     app.run()
+
+# =============================
