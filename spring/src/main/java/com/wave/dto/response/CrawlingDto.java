@@ -27,7 +27,6 @@ public record CrawlingDto(
     public record NewsDto(
 
             @JsonProperty("image_url")
-            @NotNull(message = "newsImageUrl는 필수값입니다.")
             String newsImageUrl,
 
             @JsonProperty("title")
@@ -43,18 +42,14 @@ public record CrawlingDto(
             String date
     ) {
         public LocalDate getParsedDate() {
-            String pattern = this.date.contains(".") ? "yyyy.MM.dd. hh:mm" : "yyyy-MM-dd HH:mm:ss";
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
             try {
-                LocalDate parsedDate;
-                if (this.date.contains(".")) {
-                    parsedDate = LocalDate.parse(this.date.split(" ")[0], DateTimeFormatter.ofPattern("yyyy.MM.dd."));
-                } else {
-                    parsedDate = LocalDate.parse(this.date, formatter);
-                }
-                return parsedDate;
+                DateTimeFormatter isoFormatter = DateTimeFormatter.ISO_DATE_TIME;
+
+                LocalDateTime parsedDateTime = LocalDateTime.parse(this.date, isoFormatter);
+
+                return parsedDateTime.toLocalDate();
             } catch (DateTimeParseException e) {
-                log.info("날짜 파싱 실패: " + this.date);
+                log.error("날짜 파싱 실패: " + this.date, e);
                 throw new CommonException(ErrorCode.INVALID_CRAWLING_DATE);
             }
         }

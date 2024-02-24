@@ -128,7 +128,7 @@ public class CountryService {
         newsRepository.deleteAllByCountry(country);
         List<News> newsList = crawlingDto.data().stream()
                 .map(newsDto -> News.createNews(
-                        newsDto.newsImageUrl().startsWith("http") ? newsDto.newsImageUrl() : DEFAULT_IMAGE_URL,
+                        newsDto.newsImageUrl() != null && !newsDto.newsImageUrl().isEmpty() ? newsDto.newsImageUrl() : DEFAULT_IMAGE_URL,
                         newsDto.newsTitle(),
                         newsDto.newsUrl(),
                         newsDto.getParsedDate(),

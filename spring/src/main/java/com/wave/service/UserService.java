@@ -6,6 +6,7 @@ import com.wave.domain.User;
 import com.wave.dto.request.UserDonateDto;
 import com.wave.dto.response.UserDonateInfoDto;
 import com.wave.dto.response.UserInfoDto;
+import com.wave.dto.response.UserLightInfoDto;
 import com.wave.dto.type.ErrorCode;
 import com.wave.exception.CommonException;
 import com.wave.repository.CountryRepository;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,7 +44,7 @@ public class UserService {
                             donationCountryRepository.save(DonationCountry.createDonationCountry(country, user, userDonateDto.money()));
                         }
                 );
-        user.updateTotalDonation(userDonateDto.money());
+        user.updateUserDonation(userDonateDto.money());
         country.updateWave(userDonateDto.money());
     }
 
@@ -64,5 +64,17 @@ public class UserService {
         List<DonationCountry> donationCountryList = donationCountryRepository.findByUser(user);
         return UserDonateInfoDto.of(donationCountryList, user.getTotalDonation());
 
+    }
+
+    //3.4 기부 gif 상태
+    @Transactional
+    public UserLightInfoDto getUserLightStatus(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_USER));
+
+        boolean isLight = user.getIsLightOn();
+        user.updateLightStatus(!isLight);
+
+        return UserLightInfoDto.of(isLight);
     }
 }

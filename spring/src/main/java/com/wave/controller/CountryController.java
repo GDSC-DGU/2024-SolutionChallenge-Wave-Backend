@@ -60,6 +60,7 @@ public class CountryController {
     // 백앤드 데이터 컨트롤러
 
     // 나라 데이터 저장하기
+    // DB 초기화 이후에 사용
     @PostMapping("/countryData")
     public ResponseDto<?> saveCountryData(@RequestBody CountryDataListDto countryDataListDto) {
         countryService.saveCountryData(countryDataListDto);
@@ -67,6 +68,7 @@ public class CountryController {
     }
 
     // flask로부터 크롤링한 데이터 저장하기
+    // 24시간에 한번씩 사용
     @PostMapping("/crawling-news")
     public ResponseDto<?> crawlingNews(@RequestBody CrawlingDto crawlingDto) {
         countryService.updateCountryNews(crawlingDto);

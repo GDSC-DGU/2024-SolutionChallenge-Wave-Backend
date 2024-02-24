@@ -18,13 +18,16 @@ public class News {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "news_image", nullable = false)
+    @Lob
+    @Column(name = "news_image", nullable = false, columnDefinition = "TEXT")
     private String newsImageUrl;
 
-    @Column(name = "news_title", nullable = false)
+    @Lob
+    @Column(name = "news_title", nullable = false, columnDefinition = "TEXT")
     private String newsTitle;
 
-    @Column(name = "news_url", nullable = false)
+    @Lob
+    @Column(name = "news_url", nullable = false, columnDefinition = "TEXT")
     private String newsUrl;
 
 

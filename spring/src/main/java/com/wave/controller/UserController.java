@@ -36,7 +36,11 @@ public class UserController {
         return ResponseDto.ok(userService.getUserDonateList(userId));
     }
 
-
+    //3.4 기부 gif 상태
+    @GetMapping("/light")
+    public ResponseDto<?> getUserLightStatus(@UserId Long userId) {
+        return ResponseDto.ok(userService.getUserLightStatus(userId));
+    }
 
 
 }
