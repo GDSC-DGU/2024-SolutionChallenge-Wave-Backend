@@ -117,11 +117,11 @@ public class User {
 
 
         if(totalDonation >= 1000) {
-            addEAmountBadge(EAmountBadge.FIRST_AMOUNT_BADGE);
+            addEAmountBadge(EAmountBadge.THIRD_AMOUNT_BADGE);
         } else if(totalDonation >= 100) {
             addEAmountBadge(EAmountBadge.SECOND_AMOUNT_BADGE);
         } else if(totalDonation >= 10) {
-            addEAmountBadge(EAmountBadge.THIRD_AMOUNT_BADGE);
+            addEAmountBadge(EAmountBadge.FIRST_AMOUNT_BADGE);
         }
     }
 
