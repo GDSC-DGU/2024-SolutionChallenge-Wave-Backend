@@ -7,6 +7,7 @@ import com.wave.dto.request.UserDonateDto;
 import com.wave.dto.response.UserDonateInfoDto;
 import com.wave.dto.response.UserInfoDto;
 import com.wave.dto.response.UserLightInfoDto;
+import com.wave.dto.response.UserNewBadgeInfoDto;
 import com.wave.dto.type.ErrorCode;
 import com.wave.exception.CommonException;
 import com.wave.repository.CountryRepository;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -76,5 +78,21 @@ public class UserService {
         user.updateLightStatus(!isLight);
 
         return UserLightInfoDto.of(isLight);
+    }
+
+    //3.7 새로운 배지 획득 판단 api
+    @Transactional
+    public UserNewBadgeInfoDto getNewBadge(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_USER));
+
+        String recentAmountBadge = Optional.ofNullable(user.getRecentAmountBadge()).map(Enum::toString).orElse("NONE");
+        String recentCountBadge = Optional.ofNullable(user.getRecentCountBadge()).map(Enum::toString).orElse("NONE");
+
+        user.deleteRecentAmountBadge();
+        user.deleteRecentCountBadge();
+        userRepository.save(user);
+        return UserNewBadgeInfoDto.of(recentAmountBadge, recentCountBadge);
+
     }
 }

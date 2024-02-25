@@ -43,4 +43,10 @@ public class UserController {
     }
 
 
+    //3.7 새로운 배지 획득 판단 api
+    @GetMapping("/new-badge")
+    public ResponseDto<?> getNewBadge(@UserId Long userId) {
+        return ResponseDto.ok(userService.getNewBadge(userId));
+    }
+
 }

@@ -51,6 +51,14 @@ public class User {
     @Enumerated(EnumType.STRING)
     private ERole role;
 
+    @Column(name = "recent_amount_badge")
+    @Enumerated(EnumType.STRING)
+    private EAmountBadge recentAmountBadge;
+
+    @Column(name = "recent_count_badge")
+    @Enumerated(EnumType.STRING)
+    private ECountBadge recentCountBadge;
+
     @ElementCollection(targetClass = ECountBadge.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_count_badges", joinColumns = @JoinColumn(name = "user_id"))
@@ -105,23 +113,35 @@ public class User {
 
         if(totalDonationCnt == 1) {
             addECountBadge(ECountBadge.FIRST_COUNT_BADGE);
+            updateRecentCountBadge(ECountBadge.FIRST_COUNT_BADGE);
         } else if(totalDonationCnt == 5) {
             addECountBadge(ECountBadge.SECOND_COUNT_BADGE);
+            updateRecentCountBadge(ECountBadge.SECOND_COUNT_BADGE);
         } else if(totalDonationCnt == 10) {
             addECountBadge(ECountBadge.THIRD_COUNT_BADGE);
+            updateRecentCountBadge(ECountBadge.THIRD_COUNT_BADGE);
         } else if(totalDonationCnt == 50) {
             addECountBadge(ECountBadge.FOURTH_COUNT_BADGE);
+            updateRecentCountBadge(ECountBadge.FOURTH_COUNT_BADGE);
         } else if(totalDonationCnt == 100) {
             addECountBadge(ECountBadge.FIFTH_COUNT_BADGE);
+            updateRecentCountBadge(ECountBadge.FIFTH_COUNT_BADGE);
         }
 
 
         if(totalDonation >= 1000) {
             addEAmountBadge(EAmountBadge.THIRD_AMOUNT_BADGE);
+            addEAmountBadge(EAmountBadge.SECOND_AMOUNT_BADGE);
+            addEAmountBadge(EAmountBadge.FIRST_AMOUNT_BADGE);
+            updateRecentAmountBadge(EAmountBadge.THIRD_AMOUNT_BADGE);
+
         } else if(totalDonation >= 100) {
             addEAmountBadge(EAmountBadge.SECOND_AMOUNT_BADGE);
+            addEAmountBadge(EAmountBadge.FIRST_AMOUNT_BADGE);
+            updateRecentAmountBadge(EAmountBadge.SECOND_AMOUNT_BADGE);
         } else if(totalDonation >= 10) {
             addEAmountBadge(EAmountBadge.FIRST_AMOUNT_BADGE);
+            updateRecentAmountBadge(EAmountBadge.FIRST_AMOUNT_BADGE);
         }
     }
 
@@ -146,5 +166,21 @@ public class User {
 
     public void updateLightStatus(Boolean isLightOn) {
         this.isLightOn = isLightOn;
+    }
+
+    public void updateRecentCountBadge(ECountBadge badge) {
+        this.recentCountBadge = badge;
+    }
+
+    public void updateRecentAmountBadge(EAmountBadge badge) {
+        this.recentAmountBadge = badge;
+    }
+
+    public void deleteRecentCountBadge() {
+        this.recentCountBadge = null;
+    }
+
+    public void deleteRecentAmountBadge() {
+        this.recentAmountBadge = null;
     }
 }

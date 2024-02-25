@@ -2,11 +2,6 @@ spring:
   profiles:
     include: secret
 
-  servlet:
-    multipart:
-      max-file-size: 2MB
-      max-request-size: 100MB
-
   jpa:
     hibernate:
       ddl-auto: update
